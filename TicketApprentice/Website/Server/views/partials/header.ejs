@@ -1,0 +1,25 @@
+
+<!-- Header for all ejs files-->
+<div class="header">
+    <a href= "/index" class="logo">TICKETAPPRENTICE</a>
+    <div class="header-right">
+      <a href="/browse-events">Browse Events</a>
+      <a href="/contactUs">Contact Us</a>
+      <a href="/contactOrganizer">Contact Organizer</a>
+      <% if (loggedIn) { %>
+
+        <% if (admin == 1) { %> 
+         <a id = 'review_events' href="/review-events">Review Events</a>
+         <% } %>
+
+        <% if (organizer) { %>
+          <a id = 'create_event' href="/createEvents">Create Event</a>
+        <% } %>
+        <a href="/profile" class="signin-register" ><%= username %></a>
+        <a id = 'logout_button' href="/logout" class="logout">Logout</a>
+      <% } else { %>
+        <a href= "/signin.html" class="signin-register">Sign In / Register</a>
+      <% } %>
+    </div>
+  </div>
+  

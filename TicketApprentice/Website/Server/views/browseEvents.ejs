@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+</head>
+<body>
+
+  <!-- =================================================================================== -->
+  <!-- ============================== PAGE CODE STARTS HERE ============================== -->
+  <!-- =================================================================================== -->
+
+
+  <!-- Header -->
+  <%- include('partials/header.ejs'); %>
+ 
+<!-- Search bar -->
+<div class="container-fluid fade-in1 d-flex justify-content-center align-items-center" style="background-image: url('Images/browseEvents.jpg'); background-size: cover; background-position: center; height: 50vh;">
+  <div class="center-text" style="line-height: 0;">
+    <h1 class="browse-events-heading">Browse Events</h1>
+    <a class="small-text">What kind of event are you looking for?</a>    
+    <form class="form d-flex justify-content-between align-items-center" style="width: 100%;" method="GET" action='browse-events'>
+      <div class="input-group" style="width: 100%;">
+        <i class="fa fa-search fa-lg"></i>
+        <input type="text" class="form-control form-input rounded custom-height-lg" placeholder="Search events" name="searchTerm" style="background: white; width: 600px; margin-top: 20px;"> <!-- Adjusted width directly -->
+        <span class="left-pan"><i class="fa fa-microphone fa-lg"></i></span>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Display the categories in database -->
+<div class="container mt-5 fade-in1">
+  <div class="left-text">Browse by Category</div>
+  <br>
+  <div class="row justify-content-center">
+    <!-- Category -->
+    <% categories.slice(0, 4).forEach(category => { %>
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card event-card">
+          <% if (category.categoryCoverPhoto != null ){ %>
+            <img src="<%= category.categoryCoverPhoto %>" class="card-img-top" alt="...">
+          <% } else { %>
+            <!-- Placeholder -->
+            <img src="Images/Event.jpeg" class="card-img-top" alt="Placeholder Image">
+          <% } %>
+          <div class="card-body">
+            <h5 class="card-title"><%= category.categoryName %></h5>
+            <a href="/browse-events?categoryID=<%= category.categoryID %>" class="stretched-link"></a>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+
+
+
+<!-- Featured events section -->
+<div class="container mt-5 fade-in1">
+  <div class="left-text"><%= pageTitle %></div>
+  <br>
+  <div class="row justify-content-center">
+    <% events.forEach(event => { %>
+      <div class="col-md-4 mb-4">
+        <div class="card event-card">
+          <% if (event.coverPhoto != null ){ %>
+            <img src="<%= event.coverPhoto %>" class="card-img-top" alt="...">
+          <% } else { %>
+            <!-- Placeholder -->
+            <img src="Images/Event.jpeg" class="card-img-top" alt="Placeholder Image">
+          <% } %>
+          <div class="card-body">
+            <h5 class="card-title"><%= event.eventTitle %></h5>
+            <% if (event.description && event.description.length > 100) { %>
+              <!-- Truncate description to 100 characters if it exceeds the limit -->
+              <p class="card-text"><%= event.description.substring(0, 75) %>...</p>
+            <% } else { %>
+              <!-- Otherwise, display the full description -->
+              <p class="card-text"><%= event.description %></p>
+            <% } %>
+            <p class="card-text"><strong>$<%= event.ticketPrice %></p></strong></p>
+            <a href="/event?eventId=<%= event.eventID %>"  class="stretched-link"></a>
+
+          </div>
+        </div>
+      </div>
+    <% }); %>
+
+    
+    
+  </div>
+</div>
+
+
+  <script> 
+  document.getElementById('logoutButton').addEventListener('click', function() {
+  // Initiate a fetch request to the /logout endpoint
+  fetch('/logout', { method: 'GET' })
+    .then(() => {
+      // Redirect to the login page, or do nothing if the server handles the redirect
+      // window.location.href = '/signin.html'; // Uncomment if the client handles the redirect
+    })
+    .catch(error => console.error('Logout failed:', error));
+});
+  </script>
+
+
+  <!-- Footer -->
+  <script src="includefooter.js"></script>
+    
+
+
+    
+  <!-- =================================================================================== -->
+  <!-- ============================== PAGE CODE ENDS HERE ============================== -->
+  <!-- =================================================================================== -->
+
+
+
+  <!-- Bootstrap JS (Optional, only required if you use certain Bootstrap components) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyAqB04l72T1rAlu2+nDrS4kRGCpTXwiG"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyAqB04l72T1rAlu2+nDrS4kRGCpTXwiG"
+    crossorigin="anonymous"></script>
+</body>
+</html>
